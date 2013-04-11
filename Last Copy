@@ -1,0 +1,154 @@
+final int screenWidth = 512;
+final int screenHeight = 432;
+
+String riddle = "Cut me and I weep tears as red as my flesh, "
+  + "\nyet my heart is made of stone. "
+  + "\nWhat am I?";
+String test1 = "HORRAY!!";
+String test2 = "BOO!!";
+
+float ax;
+float ay;
+float cx;
+float cy;
+boolean overcherryCup = false;
+boolean overcherry = false;
+boolean overbanan = false;
+boolean overgrape = false;
+boolean locked = false;
+float xOffset = 0.0; 
+float yOffset = 0.0; 
+
+PImage img;
+PImage icon;
+PImage cherry;
+PImage sberry;
+PImage apple;
+PImage banan;
+PImage lem;
+PImage lim;
+PImage pear;
+PImage org;
+PImage grape;
+PImage ccup;
+PImage scup;
+PImage pcup;
+int x, y;
+
+void setup() {
+  size(screenWidth, screenHeight);
+  img = loadImage("CrumbBGD3.png"); // the background
+  icon = loadImage("crumb.png"); // the crumb
+  cherry = loadImage("cherry.png");
+  //sberry = loadImage("strawberry.png");
+  //apple = loadImage("apple.png");
+  banan = loadImage("banana.png");
+  //lem = loadImage("lemon.png");
+  //lim = loadImage("lime.png");
+  //pear = loadImage("pear.png");
+  //org = loadImage("orange.png");
+  grape = loadImage("grapes.png");
+  ccup = loadImage("cherry_cup.png");
+  //scup = loadImage("straw_cup.png");
+  //pcup = loadImage("pine_cup.png");
+  
+  ax = width/2.0;
+  ay = height/2.0;
+
+}
+
+void draw() {
+  background(0);
+
+  // ensures that "scrolling" stops at right end of image
+  x = constrain(x, 0, img.width - width);    
+
+  // overwrites the whole screen with the "shifted" image
+  image(img, -x, 116);
+
+  // advances the image with the motion of the mouse
+  x = mouseX;
+
+  // shows the cursor location
+  // this is the crumb
+  image(icon, mouseX, mouseY);
+
+  // Make riddle appear
+  if (x > 100) {
+    image(ccup, 200, 200);
+    image(cherry, 100, 100);
+    image(banan, 150, 100);
+    image(grape, 230, 100);
+    fill(250);
+    text(riddle, 10, 15);
+  }
+  
+  
+// overcherry
+// overbanan
+// overgrape
+  
+  // Test if mouse is over cherry
+  if (mouseX > 100 && mouseX <  cherry.width+100 &&
+      mouseY > 100 && mouseY < cherry.height+100) {
+        overcherry = true;  
+        if (locked){
+           fill(250);
+           text(test1, 100, 50);
+           image(cherry, ax, ay);
+        }
+  } else {
+    overcherry = false;
+  }
+  
+  // Test if mouse is over banana
+  if (mouseX > 150 && mouseX <  banan.width+150 &&
+      mouseY > 100 && mouseY < banan.height+100) {
+        overbanan = true;  
+        if (locked){
+           fill(250);
+           text(test2, 200, 50);
+           image(banan, ax, ay);
+        }
+  } else {
+    overbanan = false;
+  }
+  
+  // Test if mouse is over grapes
+  if (mouseX > 230 && mouseX <  grape.width+230 &&
+      mouseY > 100 && mouseY < grape.height+100) {
+        overgrape = true;  
+        if (locked){
+           fill(250);
+           text(test2, 200, 50);
+           image(grape, ax, ay);
+        }
+  } else {
+    overgrape = false;
+  }
+  
+  
+}
+
+
+void mousePressed() {
+  if(overcherryCup || overcherry || overbanan || overgrape) { 
+    locked = true; 
+  } else {
+    locked = false;
+  }
+  xOffset = mouseX-ax; 
+  yOffset = mouseY-ay; 
+
+}
+
+void mouseDragged() {
+  if(locked) {
+    ax = mouseX-xOffset; 
+    ay = mouseY-yOffset; 
+  }
+}
+
+void mouseReleased() {
+  locked = false;
+}
